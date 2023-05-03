@@ -1,0 +1,1 @@
+enum MessagePosition { top, bottom }
