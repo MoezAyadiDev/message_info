@@ -115,7 +115,12 @@ class _InfoWidgetState extends State<InfoWidget>
       contentColor: contentColor,
       infoColors: widget.infoColors,
     );
-    final Color textButtonColor = getTextButtonColor(isThemeDark, colorScheme);
+    final newTheme = theme.copyWith(
+        brightness: isThemeDark ? Brightness.dark : Brightness.light);
+    final Color textButtonColor = getTextButtonColor(
+      isThemeDark,
+      newTheme.colorScheme,
+    );
     double newWidth = 35;
     return AnimatedBuilder(
       animation: _controllerEntring!,
@@ -168,8 +173,9 @@ class _InfoWidgetState extends State<InfoWidget>
                             ),
                           ),
                         if (widget.icon == null) const SizedBox(width: 10.0),
-                        if (newWidth > _finalWidth - 2)
-                          const SizedBox(width: 10.0),
+                        // if (newWidth > _finalWidth - 5)
+                        //   const SizedBox(width: 10.0),
+                        //if (newWidth > 40)
                         buildTextWidget(textStyle, widget.action != null),
                         if (widget.action != null && newWidth > _finalWidth - 2)
                           SizedBox(
@@ -195,7 +201,7 @@ class _InfoWidgetState extends State<InfoWidget>
               child: Padding(
                 padding: textPadding,
                 child: Opacity(
-                  opacity: 1.0,
+                  opacity: 0.0,
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 400),
                     child: Text(
@@ -230,8 +236,8 @@ class _InfoWidgetState extends State<InfoWidget>
           child: Text(
             widget.text,
             style: textStyle,
-            overflow: TextOverflow.ellipsis,
-            softWrap: false,
+            overflow: TextOverflow.fade,
+            softWrap: true,
             maxLines: 5,
           ),
         ),
@@ -269,10 +275,29 @@ class _InfoWidgetState extends State<InfoWidget>
         curve: const Interval(
           0.3,
           0.7,
-          curve: Curves.easeInOutCubic,
+          curve: Curves.easeInOut,
         ),
       ),
     );
+    // _widthAnimation = TweenSequence<double>(
+    //   <TweenSequenceItem<double>>[
+    //     TweenSequenceItem<double>(
+    //       tween: Tween<double>(begin: 0, end: 1.1)
+    //           .chain(CurveTween(curve: Curves.easeInOut)),
+    //       weight: 1.0,
+    //     ),
+    //     TweenSequenceItem<double>(
+    //       tween: Tween<double>(begin: 1.1, end: 0.95)
+    //           .chain(CurveTween(curve: Curves.easeInOut)),
+    //       weight: 2.0,
+    //     ),
+    //     TweenSequenceItem<double>(
+    //       tween: Tween<double>(begin: 0.95, end: 1)
+    //           .chain(CurveTween(curve: Curves.easeInOut)),
+    //       weight: 2.0,
+    //     ),
+    //   ],
+    // ).animate(_controllerEntring!);
 
     _heightAnimation = Tween<double>(
       begin: 0,
@@ -320,12 +345,12 @@ class _InfoWidgetState extends State<InfoWidget>
         },
       );
     _opacityAnimation = Tween<double>(
-      begin: 0.5,
+      begin: 0.7,
       end: 1,
     ).animate(
       CurvedAnimation(
         parent: _controllerEntring!,
-        curve: Curves.easeInOut,
+        curve: Curves.linear,
       ),
     );
     if (mounted) {

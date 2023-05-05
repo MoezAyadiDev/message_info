@@ -72,8 +72,5 @@ Color getTextButtonColor(
   bool isThemeDark,
   ColorScheme colorScheme,
 ) {
-  if (isThemeDark) {
-    return colorScheme.inversePrimary;
-  }
-  return colorScheme.primary;
+  return colorScheme.inversePrimary;
 }
